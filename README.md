@@ -1,16 +1,15 @@
-# ridelink
+Your technical task is to develop a mobile application using Flutter that will fulfil the following requirements.
 
-A new Flutter project.
+Application Requirements:
 
-## Getting Started
+1. Allow a user to sign up and login securely.
+2. Allow a user to upload a picture.
+3. The application should use a firebase backend
+4. Allow a user to get their GPS location on the application.
+ 
 
-This project is a starting point for a Flutter application.
+Additional Guidance:
 
-A few resources to get you started if this is your first Flutter project:
+Your application should demonstrate proficiency in Flutter development, robust user authentication mechanisms, database management, and a creative UI/UX design.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Please develop the mobile application fulfilling the above requirements. Feel free to include any additional features or enhancements that you believe would enhance the user experience.
