@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:ridelink/app.dart';
 import 'package:ridelink/firebase_options.dart';
 
- void main() async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+ void main()  async {
+  WidgetsFlutterBinding.ensureInitialized();
+ await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const RidelinkApp());
 }
 
