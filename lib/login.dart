@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({ Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
-  @override 
+  @override
   _LoginPageState createState() => _LoginPageState();
-
 }
 
-
 class _LoginPageState extends State<LoginPage> {
-
-
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: ListView( 
-          children: [
-            Text("RIDELINK")
-          ],
+        body: SafeArea(
+            child: ListView(
+      children: [
+        Column(
+          children: [Image.asset("assets/ridelink.png"), Text("RIDELINK")],
         )
-        )
-    );
+      ],
+    )));
   }
 }
