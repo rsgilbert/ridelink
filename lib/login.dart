@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text("LOGIN"))
           ],
         ),
-        const SizedBox(height:20),
+        const SizedBox(height: 20),
         TextButton(
           onPressed: onGoToSignupPressed,
           child: Text("Not a user? Signup here",
