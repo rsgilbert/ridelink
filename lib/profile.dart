@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ridelink/loading_overlay.dart';
 import 'package:ridelink/snackbar_global.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -71,6 +73,10 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  void onShowDeterminedPositionPressed() async {
+    await showDeterminedPosition();
+  }
+
   String userPhotoURL() {
     return user().photoURL ?? "";
   }
@@ -103,10 +109,68 @@ class _ProfilePageState extends State<ProfilePage> {
     _displayNameController.text = user().displayName ?? "";
   }
 
+  double latitude = 0;
+  double longitude = 0;
+
+  Future<void> showDeterminedPosition() async {
+    try {
+      Position pos = await _determinePosition();
+      latitude = pos.latitude;
+      longitude = pos.longitude;
+      setState(()=>{});
+      SnackbarGlobal.show(
+          "Your current position has been determined successfully");
+    } on Exception catch (e) {
+      SnackbarGlobal.show("Failed to show determined position: ${e}");
+    }
+  }
+
+  /// Determine the current position of the device.
+  ///
+  /// When the location services are not enabled or permissions
+  /// are denied the `Future` will return an error.
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
   @override
   void initState() {
     super.initState();
     initializeTextControls();
+    showDeterminedPosition();
   }
 
   @override
@@ -123,6 +187,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 PopupMenuItem(
                     onTap: onRemoveProfilePicturePressed,
                     child: const Text("Remove Profile Picture")),
+                PopupMenuItem(
+                    onTap: onShowDeterminedPositionPressed,
+                    child: const Text("Show Determined Position")),
                 PopupMenuItem(
                   onTap: onSignoutTapped,
                   child: const Text("Sign out"),
@@ -154,6 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       border: OutlineInputBorder(),
                       hintText: "name")),
               const SizedBox(height: 16),
+
               OverflowBar(
                 alignment: MainAxisAlignment.end,
                 children: [
@@ -166,7 +234,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       onPressed: onSavePressed,
                       child: const Text("SAVE"))
                 ],
-              )
+              ),
+
+              const SizedBox(height: 32),
+              Text("Your current position is (${latitude},${longitude})")
             ],
           ),
         ));
@@ -200,7 +271,7 @@ class _ProfilePageState extends State<ProfilePage> {
             shape: BoxShape.circle,
             image: DecorationImage(
                 image: NetworkImage(photoURL), fit: BoxFit.cover),
-            border: Border.all(color: Colors.red, width: 2)),
+            border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2)),
       );
     }
   }

@@ -15,7 +15,9 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
+        body: Container(
+            color: Colors.green[100],
+            child: SafeArea(
             child: ListView(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       children: [
@@ -66,7 +68,7 @@ class _SignupPageState extends State<SignupPage> {
           ],
         )
       ],
-    )));
+    ))));
   }
 
   final _emailController = TextEditingController();

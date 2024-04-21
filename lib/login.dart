@@ -15,63 +15,68 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-            child: ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      children: [
-        const SizedBox(height: 40),
-        Column(
-          children: [
-            Image.asset("assets/ridelink.png", height: 60),
-            SizedBox(height: 20),
-            Text("LOGIN",
-                style: TextStyle(
-                    fontSize: 24,
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold))
-          ],
-        ),
-        const SizedBox(height: 40),
-        TextField(
-          controller: _emailController,
-          decoration: const InputDecoration(
-              labelText: "Email",
-              border: OutlineInputBorder(),
-              hintText: "email"),
-          keyboardType: TextInputType.emailAddress,
-        ),
-        const SizedBox(height: 16),
-        TextField(
-          controller: _passwordController,
-          decoration: const InputDecoration(
-              labelText: "Password", border: OutlineInputBorder()),
-          obscureText: true,
-        ),
-        const SizedBox(height: 16),
-        OverflowBar(
-          alignment: MainAxisAlignment.end,
-          children: [
-            TextButton(
-                onPressed: onCancel,
-                style: TextButton.styleFrom(
-                    foregroundColor: Theme.of(context).primaryColor),
-                child: const Text("CANCEL")),
-            ElevatedButton(
-                style: TextButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary),
-                onPressed: onLoginPressed,
-                child: const Text("LOGIN"))
-          ],
-        ),
-        const SizedBox(height: 20),
-        TextButton(
-          onPressed: onGoToSignupPressed,
-          child: Text("Not a user? Signup here",
-              style: TextStyle(color: Theme.of(context).colorScheme.primary)),
-        )
-      ],
-    )));
+        body: Container(
+            color: Colors.green[100],
+            child: SafeArea(
+                child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              children: [
+                const SizedBox(height: 40),
+                Column(
+                  children: [
+                    Image.asset("assets/ridelink.png", height: 60),
+                    const SizedBox(height: 20),
+                    Text("LOGIN",
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold))
+                  ],
+                ),
+                const SizedBox(height: 40),
+                TextField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                      labelText: "Email",
+                      border: OutlineInputBorder(),
+                      hintText: "email"),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                      labelText: "Password", border: OutlineInputBorder()),
+                  obscureText: true,
+                ),
+                const SizedBox(height: 16),
+                OverflowBar(
+                  alignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                        onPressed: onCancel,
+                        style: TextButton.styleFrom(
+                            foregroundColor: Theme.of(context).primaryColor),
+                        child: const Text("CANCEL")),
+                    ElevatedButton(
+                        style: TextButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary),
+                        onPressed: onLoginPressed,
+                        child: const Text("LOGIN"))
+                  ],
+                ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: onGoToSignupPressed,
+                  child: Text("Not a user? Signup here",
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary)),
+                )
+              ],
+            ))));
   }
 
   final _emailController = TextEditingController();
