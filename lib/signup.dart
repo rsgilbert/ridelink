@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:ridelink/snackbar_global.dart';
 import 'package:ridelink/utils.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignupPage extends StatefulWidget {
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignupPageState createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Image.asset("assets/ridelink.png", height: 60),
             SizedBox(height: 20),
-            Text("LOGIN",
+            Text("SIGNUP",
                 style: TextStyle(
                     fontSize: 24,
                     color: Theme.of(context).colorScheme.primary,
@@ -58,17 +58,12 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text("CANCEL")),
             ElevatedButton(
                 style: TextButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Theme.of(context).colorScheme.onPrimary),
-                onPressed: onLoginPressed,
-                child: const Text("LOGIN"))
+                    
+                onPressed: onSignupPressed,
+                child: const Text("SIGNUP"))
           ],
-        ),
-        const SizedBox(height:20),
-        TextButton(
-          onPressed: onGoToSignupPressed,
-          child: Text("Not a user? Signup here",
-              style: TextStyle(color: Theme.of(context).colorScheme.primary)),
         )
       ],
     )));
@@ -80,33 +75,26 @@ class _LoginPageState extends State<LoginPage> {
   onCancel() {
     _emailController.clear();
     _passwordController.clear();
+    navigateToLoginPage();
   }
 
-  navigateToProfilePage() {
-    Navigator.of(context).pushNamedAndRemoveUntil("/profile", (route) => false);
+  navigateToLoginPage() {
+    Navigator.of(context).pushNamedAndRemoveUntil("/login", (route) => false);
   }
 
-  onGoToSignupPressed() {
-    Navigator.of(context).pushNamed("/signup");
-  }
-
-  onLoginPressed() async {
+  onSignupPressed() async {
     try {
-      print("onLoginPressed");
+      print("onSignupPressed");
       print(_emailController.text);
       print(_passwordController.text);
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
       print(credential);
-      navigateToProfilePage();
+      SnackbarGlobal.show("Account created successfully. Please login");
+      navigateToLoginPage();
     } on FirebaseAuthException catch (e) {
       print(e);
-      if (e.code == "user-not-found") {
-        print("No user found for that email");
-      } else if (e.code == "wrong-password") {
-        print("Wrong password provided for that user");
-      }
-      SnackbarGlobal.show("Failed to login: ${e.message}");
+      SnackbarGlobal.show("Failed to signup: ${e.message}");
     }
   }
 }
