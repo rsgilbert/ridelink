@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -43,10 +42,11 @@ class _ProfilePageState extends State<ProfilePage> {
         return;
       }
 
+      print("Picked image ${image} , ${image.name} , ${image.path}");
       String filename = image.name;
       final fileRef = storageRef.child(filename);
-      File file = File(image.path);
-      await fileRef.putFile(file);
+      // File file = File(image.path);
+      await fileRef.putData(await image.readAsBytes());
       String photoURL = await fileRef.getDownloadURL();
       await updateUserPhotoUrl(photoURL);
       setState(() {});
@@ -117,7 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
       Position pos = await _determinePosition();
       latitude = pos.latitude;
       longitude = pos.longitude;
-      setState(()=>{});
+      setState(() => {});
       SnackbarGlobal.show(
           "Your current position has been determined successfully");
     } on Exception catch (e) {
@@ -260,6 +260,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget profileImage() {
     String photoURL = userPhotoURL();
+    print(photoURL);
+    // return Image.network(photoURL, fit: BoxFit.contain, height: 200);
     if (photoURL == "") {
       return Image.asset("assets/default_profile_picture.png",
           fit: BoxFit.contain, height: 200);
@@ -271,7 +273,8 @@ class _ProfilePageState extends State<ProfilePage> {
             shape: BoxShape.circle,
             image: DecorationImage(
                 image: NetworkImage(photoURL), fit: BoxFit.cover),
-            border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2)),
+            border: Border.all(
+                color: Theme.of(context).colorScheme.primary, width: 2)),
       );
     }
   }

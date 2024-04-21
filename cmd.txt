@@ -1,0 +1,3 @@
+build apk, it will generate 3 files. install the one with arm65-v8a-release.apk 
+flutter build apk --split-per-abi
+
